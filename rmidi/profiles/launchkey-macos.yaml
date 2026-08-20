@@ -1,0 +1,52 @@
+# macOS — Novation Launchkey Mini MK4 25
+# device map verified from hardware: knobs CC 21-28 ch9, pads notes ch2
+# (drum-rack order  TOP 40 41 42 43 48 49 50 51 / BOT 36 37 38 39 44 45 46 47)
+target: macos
+device: Launchkey Mini MK4 25 MIDI Out
+push_hz: 40
+fine_scale: 0.15
+shift_scale: 5.0
+leds: true
+led_channels: [0, 1, 2]
+pad_octave_tolerant: true
+# Encoder Mode changes the knobs' CC bank; knob N is <base>+N-1 in each of these.
+knob_cc_banks: [21, 51]
+pointer_speed: 12.0
+bindings:
+  # knobs
+  - {type: cc, ch: 9, cc: 21, mode: abs, action: mac.mouse.x, step: 1.0}
+  - {type: cc, ch: 9, cc: 22, mode: abs, action: mac.mouse.y, step: 1.0}
+  - {type: cc, ch: 9, cc: 23, mode: abs, action: mac.scroll.v, step: 1.0}
+  - {type: cc, ch: 9, cc: 24, mode: abs, action: mac.scroll.h, step: 1.0}
+  - {type: cc, ch: 9, cc: 25, mode: abs, action: mac.mouse.x, step: 0.25}
+  - {type: cc, ch: 9, cc: 26, mode: abs, action: mac.mouse.y, step: 0.25}
+  - {type: cc, ch: 9, cc: 27, mode: abs, action: mac.scroll.v, step: 0.3}
+  - {type: cc, ch: 9, cc: 28, mode: abs, action: mac.scroll.h, step: 0.3}
+
+  # pads - top row
+  - {type: note, ch: 2, note: 40, action: mac.click}
+  - {type: note, ch: 2, note: 41, action: mac.click.double}
+  - {type: note, ch: 2, note: 42, action: mac.click.right}
+  - {type: note, ch: 2, note: 43, action: mac.app.switch}
+  - {type: note, ch: 2, note: 48, action: mac.spotlight}
+  - {type: note, ch: 2, note: 49, action: mac.mission}
+  - {type: note, ch: 2, note: 50, action: mac.space.prev}
+  - {type: note, ch: 2, note: 51, action: mac.space.next}
+
+  # pads - bottom row
+  - {type: note, ch: 2, note: 36, action: mod.fine}
+  - {type: note, ch: 2, note: 37, action: mod.clutch}
+  - {type: note, ch: 2, note: 38, action: mod.shift}
+  - {type: note, ch: 2, note: 39, action: mac.esc}
+  - {type: note, ch: 2, note: 44, action: mac.vol.down}
+  - {type: note, ch: 2, note: 45, action: mac.vol.up}
+  - {type: note, ch: 2, note: 46, action: mac.play}
+  - {type: note, ch: 2, note: 47, action: mac.screenshot}
+
+  # transport buttons
+  - {type: cc, ch: 16, cc: 102, mode: button, action: mac.click}
+  - {type: cc, ch: 16, cc: 103, mode: button, action: mac.click.double}
+
+  # touch strips
+  - {type: pitch, ch: 1, action: shuttle}
+  - {type: cc, ch: 1, cc: 1, mode: absolute, action: mac.scroll.v, min: -20, max: 20}

@@ -1,0 +1,9 @@
+#!/bin/bash
+LUT="/Library/Application Support/Blackmagic Design/DaVinci Resolve/LUT/rmidi"
+[ -d "$LUT" ] && chmod -R a+rX "$LUT"
+xattr -dr com.apple.quarantine /Applications/rmidi.app 2>/dev/null || true
+# a rebuilt unsigned app keeps a stale Accessibility entry that no longer applies;
+# drop it so the user can grant permission to the new build cleanly.
+tccutil reset Accessibility com.rmidi.app 2>/dev/null || true
+open "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility" 2>/dev/null || true
+exit 0

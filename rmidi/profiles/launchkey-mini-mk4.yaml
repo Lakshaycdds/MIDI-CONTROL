@@ -1,0 +1,74 @@
+# Novation Launchkey Mini MK4 25 -> DaVinci Resolve Studio
+# Knobs are ABSOLUTE pots (end stops). mode:abs converts them to infinite deltas.
+# When a pot hits 0 or 127: hold the CLUTCH pad, spin it back to centre, release.
+target: resolve                      # which application this profile drives
+device: Launchkey Mini MK4 25 MIDI Out
+push_hz: 40
+default_node: 1       # node the knobs write to at startup; pads 1-4 switch live
+autobackup: true      # grab a gallery still before the first write of a session
+fine_scale: 0.15      # hold FINE pad
+shift_scale: 5.0      # hold SHIFT pad
+
+bindings:
+  # ---- 8 knobs (top row) ----
+  - {type: cc, ch: 9, cc: 21, mode: abs, action: cdl.lift,    step: 0.0025}
+  - {type: cc, ch: 9, cc: 22, mode: abs, action: cdl.gamma,   step: 0.0060}
+  - {type: cc, ch: 9, cc: 23, mode: abs, action: cdl.gain,    step: 0.0060}
+  - {type: cc, ch: 9, cc: 24, mode: abs, action: cdl.sat,     step: 0.0080}
+  - {type: cc, ch: 9, cc: 25, mode: abs, action: cdl.gain.r,  step: 0.0040}
+  - {type: cc, ch: 9, cc: 26, mode: abs, action: cdl.gain.g,  step: 0.0040}
+  - {type: cc, ch: 9, cc: 27, mode: abs, action: cdl.gain.b,  step: 0.0040}
+  - {type: cc, ch: 9, cc: 28, mode: abs, action: cdl.lift.r,  step: 0.0025}
+
+  # ---- 16 pads: notes ch 2, Ableton drum-rack order ----
+  # physical grid:  TOP  40 41 42 43 48 49 50 51
+  #                 BOT  36 37 38 39 44 45 46 47
+
+  # TOP ROW - node building & grade ops (every one has a visible effect)
+  - {type: note, ch: 2, note: 40, action: node.prev}          # 1  node select <-
+  - {type: note, ch: 2, note: 41, action: node.next}          # 2  node select ->
+  - {type: note, ch: 2, note: 42, action: node.add_serial}    # 3  add serial node
+  - {type: note, ch: 2, note: 43, action: node.add_parallel}  # 4  add parallel node
+  - {type: note, ch: 2, note: 48, action: node.delete}        # 5  delete node
+  - {type: note, ch: 2, note: 49, action: node.toggle}        # 6  enable / disable node
+  - {type: note, ch: 2, note: 50, action: grade.reset_node}   # 7  reset this node's grade
+  - {type: note, ch: 2, note: 51, action: viewer.bypass}      # 8  before / after
+
+  # BOTTOM ROW - modifiers (held, LED-lit) then navigation
+  - {type: note, ch: 2, note: 36, action: mod.fine}           # 9  HOLD  fine
+  - {type: note, ch: 2, note: 37, action: mod.clutch}         # 10 HOLD  clutch
+  - {type: note, ch: 2, note: 38, action: mod.shift}          # 11 HOLD  shift
+  - {type: note, ch: 2, note: 39, action: still.grab}         # 12 grab still
+  - {type: note, ch: 2, note: 44, action: clip.prev}          # 13 previous clip
+  - {type: note, ch: 2, note: 45, action: clip.next}          # 14 next clip
+  - {type: note, ch: 2, note: 46, action: version.add}        # 15 add version
+  - {type: note, ch: 2, note: 47, action: page.color}         # 16 color page
+
+  # ---- up/down buttons ----
+  - {type: cc, ch: 16, cc: 102, mode: button, action: clip.prev}
+  - {type: cc, ch: 16, cc: 103, mode: button, action: clip.next}
+
+  # ---- keyboard: ch 9, first key = note 48 ----
+  - {type: note, ch: 9, note: 48, action: grade.cst_stack, shift_action: grade.cst_stack.force}
+
+  # ---- touch strips ----
+  # Pitch strip springs back to centre -> shuttle. Push right = forward, harder = faster.
+  - {type: pitch, ch: 1, action: shuttle}
+  # Modulation strip holds position -> absolute Saturation, 0.0 at bottom, 2.0 at top.
+  - {type: cc, ch: 1, cc: 1, mode: absolute, action: abs.sat, min: 0.0, max: 2.0}
+
+# ---- .drx grade presets (whole node graphs incl. OFX Color Space Transform) ----
+# capture with:  ./rmidi.sh save-drx --slot 1
+drx_slots:
+  "1": presets/cst-slog3-to-rec709.drx
+  "2": presets/slot2.drx
+  "3": presets/slot3.drx
+  "4": presets/slot4.drx
+
+# ---- pad LED feedback ----
+leds: true
+led_channels: [0, 1, 2]   # all three lit the pads in testing
+pad_octave_tolerant: true
+# Encoder Mode changes the knobs' CC bank; knob N is <base>+N-1 in each of these.
+knob_cc_banks: [21, 51]  # Oct- / Oct+ no longer breaks pad bindings
+shuttle_max_fps: 25

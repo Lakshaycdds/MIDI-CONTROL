@@ -1,0 +1,52 @@
+# Premiere Pro — Novation Launchkey Mini MK4 25
+# device map verified from hardware: knobs CC 21-28 ch9, pads notes ch2
+# (drum-rack order  TOP 40 41 42 43 48 49 50 51 / BOT 36 37 38 39 44 45 46 47)
+target: premiere
+device: Launchkey Mini MK4 25 MIDI Out
+push_hz: 40
+fine_scale: 0.15
+shift_scale: 5.0
+leds: true
+led_channels: [0, 1, 2]
+pad_octave_tolerant: true
+# Encoder Mode changes the knobs' CC bank; knob N is <base>+N-1 in each of these.
+knob_cc_banks: [21, 51]
+
+bindings:
+  # knobs
+  - {type: cc, ch: 9, cc: 21, mode: abs, action: pr.scrub, step: 1.0}
+  - {type: cc, ch: 9, cc: 22, mode: abs, action: pr.param, step: 1.0}
+  - {type: cc, ch: 9, cc: 23, mode: abs, action: pr.scrub, step: 1.0}
+  - {type: cc, ch: 9, cc: 24, mode: abs, action: pr.param, step: 1.0}
+  - {type: cc, ch: 9, cc: 25, mode: abs, action: pr.scrub, step: 1.0}
+  - {type: cc, ch: 9, cc: 26, mode: abs, action: pr.param, step: 1.0}
+  - {type: cc, ch: 9, cc: 27, mode: abs, action: pr.scrub, step: 1.0}
+  - {type: cc, ch: 9, cc: 28, mode: abs, action: pr.param, step: 1.0}
+
+  # pads - top row
+  - {type: note, ch: 2, note: 40, action: pr.prev_edit}
+  - {type: note, ch: 2, note: 41, action: pr.next_edit}
+  - {type: note, ch: 2, note: 42, action: pr.in}
+  - {type: note, ch: 2, note: 43, action: pr.out}
+  - {type: note, ch: 2, note: 48, action: pr.cut}
+  - {type: note, ch: 2, note: 49, action: pr.ripple_delete}
+  - {type: note, ch: 2, note: 50, action: pr.insert}
+  - {type: note, ch: 2, note: 51, action: pr.overwrite}
+
+  # pads - bottom row
+  - {type: note, ch: 2, note: 36, action: mod.fine}
+  - {type: note, ch: 2, note: 37, action: mod.clutch}
+  - {type: note, ch: 2, note: 38, action: mod.shift}
+  - {type: note, ch: 2, note: 39, action: pr.mark_clip}
+  - {type: note, ch: 2, note: 44, action: pr.prev_frame}
+  - {type: note, ch: 2, note: 45, action: pr.next_frame}
+  - {type: note, ch: 2, note: 46, action: pr.lumetri}
+  - {type: note, ch: 2, note: 47, action: pr.save}
+
+  # transport buttons
+  - {type: cc, ch: 16, cc: 102, mode: button, action: pr.prev_edit}
+  - {type: cc, ch: 16, cc: 103, mode: button, action: pr.next_edit}
+
+  # touch strips
+  - {type: pitch, ch: 1, action: shuttle}
+  - {type: cc, ch: 1, cc: 1, mode: absolute, action: pr.param, min: 0, max: 100}
